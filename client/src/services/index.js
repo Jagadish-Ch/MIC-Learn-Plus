@@ -29,11 +29,14 @@ export async function loginService(formData) {
 export async function checkAuthService() {
   try {
     const { data } = await axiosInstance.get("/auth/check-auth");
-  
+    
     return data;
     
   } catch (error) {
-    ErrorMessage(error.message);
+    if(error?.status!==401){
+      ErrorMessage(error.message);
+    }
+    
   }
 }
 
@@ -207,6 +210,12 @@ export async function resetCourseProgressService(userId, courseId) {
       courseId,
     }
   );
+
+  return data;
+}
+
+export async function recommendCourse(formData) {
+  const { data } = await axiosInstance.post(`/student/course-recommendation/add`, formData);
 
   return data;
 }

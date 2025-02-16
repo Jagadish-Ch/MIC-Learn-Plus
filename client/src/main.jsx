@@ -6,13 +6,16 @@ import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./context/auth-context/index.jsx";
 import InstructorProvider from "./context/instructor-context/index.jsx";
 import StudentProvider from "./context/student-context/index.jsx";
+import { DarkModeProvider } from "./context/dark-mode-context/DarkModeContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthProvider>
       <InstructorProvider>
         <StudentProvider>
+        <DarkModeProvider>
           <App />
+        </DarkModeProvider>
         </StudentProvider>
       </InstructorProvider>
     </AuthProvider>

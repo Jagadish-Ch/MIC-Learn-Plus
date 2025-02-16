@@ -93,7 +93,7 @@ import { clamp } from "framer-motion";
           className="relative mt-6 border border-gray-300 mx-auto"
           style={{ width: "100%", maxWidth: "800px", height: "auto" }}
         >
-          <img
+          {/* <img
               src={cert}
               alt="Certificate Template"
               className="w-full h-auto"
@@ -104,7 +104,7 @@ import { clamp } from "framer-motion";
                   height: element.clientHeight,
                 });
               }}
-            />
+            /> */}
           {template && (
             <img
               src={template}

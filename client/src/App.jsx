@@ -6,6 +6,7 @@ import { AuthContext } from "./context/auth-context";
 import InstructorDashboardpage from "./pages/instructor";
 import StudentViewCommonLayout from "./components/student-view/common-layout";
 import StudentHomePage from "./pages/student/home";
+import StudentRecommendedCourse from './pages/student/student-course-recommendation'
 import NotFoundPage from "./pages/not-found";
 import AddNewCoursePage from "./pages/instructor/add-new-course";
 import StudentViewCoursesPage from "./pages/student/courses";
@@ -18,43 +19,16 @@ import CourseRecommendationForm from "./pages/student/student-course-recommendat
 import CertificateGenerator from "./components/certificate-generator/CertificateGenerator";
 import AdminPanel from "./components/certificate-generator2/AdminPanel";
 import CertificatePage from "./components/certificate-generator2/CertificatePage";
+import StudentActivityPage from "./components/profile/student-profile/StudentActivityPage";
+import StudentProfile from "./components/profile/student-profile";
 // import CanvasComponent from "./components/certificate-generator/Components/CanvasComponent";
 
 
 function App() {
   const { auth } = useContext(AuthContext);
-  
-  const [theme, setTheme] = useState("light");
-
-  useEffect(()=> {
-    if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
-    }
-    else {
-      setTheme('light');
-    }
-  }, [])
-
-  useEffect(()=> {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    }
-    else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme])
-  
-  const handleThemeSwitch = () => {
-    
-    console.log('theme', theme==="dark"?"light":"dark");
-    setTheme(theme==="dark"?"light":"dark");
-    
-    
-  }
 
   return (
     <div>
-      <button className="bg-red-700" onClick={handleThemeSwitch}>{theme==="dark"?"light":"dark"}</button>
     <Routes>
       <Route
         path="/auth"
@@ -102,6 +76,32 @@ function App() {
           />
         }
       />
+      {/* Public */}
+      <Route
+        path="/info/:id"
+        element={<StudentActivityPage role={"public"} />
+          // <RouteGuard
+          //   element={<StudentActivityPage />}
+          //   authenticated={auth?.authenticate}
+          //   user={auth?.user}
+          // />
+        }
+      />
+      {/* Instructor/ Admin */}
+      <Route
+        path="/instructor/info/:id"
+        element={
+          <RouteGuard
+            element={<StudentActivityPage role={"instructor"} />}
+            authenticated={auth?.authenticate}
+            user={auth?.user}
+          />
+        }
+      />
+      <Route
+          path="course-progress/:id"
+          element={<StudentViewCourseProgressPage />}
+        />
       <Route
         path="/"
         element={
@@ -115,15 +115,27 @@ function App() {
         <Route path="" element={<StudentHomePage />} />
         <Route path="home" element={<StudentHomePage />} />
         <Route path="courses" element={<StudentViewCoursesPage />} />
+        <Route path="recommend-course" element={<StudentRecommendedCourse/>} />
         <Route
           path="course/details/:id"
           element={<StudentViewCourseDetailsPage />}
         />
         <Route path="payment-return" element={<PaypalPaymentReturnPage />} />
         <Route path="student-courses" element={<StudentCoursesPage />} />
-        <Route
+        {/* <Route
           path="course-progress/:id"
           element={<StudentViewCourseProgressPage />}
+        /> */}
+        {/* Student */}
+        <Route
+          path="/profile/:id"
+          element={
+            <RouteGuard
+              element={<StudentActivityPage role={"user"} />}
+              authenticated={auth?.authenticate}
+              user={auth?.user}
+            />
+          }
         />
       </Route>
       <Route path="*" element={<NotFoundPage />} />

@@ -8,7 +8,7 @@ import {
   fetchStudentViewCourseListService,
 } from "@/services";
 import { AuthContext } from "@/context/auth-context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function StudentHomePage() {
   const { studentViewCoursesList, setStudentViewCoursesList } =
@@ -22,14 +22,17 @@ function StudentHomePage() {
     const currentFilter = {
       category: [getCurrentId],
     };
-
+    console.log("Stringify: ", JSON.stringify(currentFilter));
     sessionStorage.setItem("filters", JSON.stringify(currentFilter));
 
     navigate("/courses");
   }
 
   async function fetchAllStudentViewCourses(filter) {
-    const response = await fetchStudentViewCourseListService(filter);
+    const query = new URLSearchParams({
+      ...filter,
+    });
+    const response = await fetchStudentViewCourseListService(query);
     if (response?.success) setStudentViewCoursesList(response?.data);
   }
 
@@ -48,9 +51,7 @@ function StudentHomePage() {
   }
 
   useEffect(() => {
-    fetchAllStudentViewCourses({
-      category : ['cloud-computing']
-    }); // sample query
+    fetchAllStudentViewCourses({category:"cloud-computing"}); // Preload Content latest courses
   }, []);
 
   return (

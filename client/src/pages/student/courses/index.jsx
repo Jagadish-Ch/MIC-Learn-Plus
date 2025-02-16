@@ -38,6 +38,7 @@ function createSearchParamsHelper(filterParams) {
 function StudentViewCoursesPage() {
   const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState({});
+  const [hideFiltersButton, setHideFiltersButton] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     studentViewCoursesList,
@@ -72,15 +73,33 @@ function StudentViewCoursesPage() {
     }
 
     setFilters(cpyFilters);
+    console.log("JSON Str: ", JSON.stringify(cpyFilters));
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
   }
 
   async function fetchAllStudentViewCourses(filters , sort) {
     
-    const query = new URLSearchParams({
-      ...filters,
-      sortBy: sort,
-    });
+    // console.log(filters)
+    const generateQuery = () => {
+      // console.log("Condition: ", Object.keys(filters).length !== 0 && filters.category.length!==0)
+      if(Object.keys(filters).length !== 0 && filters.category.length!==0){
+        console.log("Check this: ", filters)
+        return new URLSearchParams({
+          ...filters,
+          sortBy: sort,
+        });
+      }
+      else {
+        let initialFilter = {category:"cloud-computing"}
+        return new URLSearchParams({
+          ...initialFilter,
+          sortBy: sort,
+        });
+      }
+    }
+
+    const query = generateQuery();
+
     console.log("query", query)
     const response = await fetchStudentViewCourseListService(query);
     if (response?.success) {
@@ -129,12 +148,15 @@ function StudentViewCoursesPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">All Courses</h1>
+      <span className="flex flex-wrap justify-between">
+        <h1 className="text-3xl font-bold mb-4">All Courses</h1>
+        <Button onClick={()=>setHideFiltersButton(!hideFiltersButton)}>Filters</Button>
+      </span>
       <div className="flex flex-col md:flex-row gap-4">
-        <aside className="w-full md:w-64 space-y-4">
-          <div>
+        <aside className={`${hideFiltersButton? "hidden" : "visible"} w-full md:w-64 space-y-4`}>
+          <div className="flex flex-wrap w-full border-b md:border-none">
             {Object.keys(filterOptions).map((ketItem, ketIndex) => (
-              <div key={ketIndex} className="p-4 border-b">
+              <div key={ketIndex} className="p-4 md:border-b w-max">
                 <h3 className="font-bold mb-3">{ketItem.toUpperCase()}</h3>
                 <div className="grid gap-2 mt-2">
                   {filterOptions[ketItem].map((option, index) => (
@@ -158,7 +180,7 @@ function StudentViewCoursesPage() {
             ))}
           </div>
         </aside>
-        <main className="flex-1">
+        <main className="flex-1 md:px-8">
           <div className="flex justify-end items-center mb-4 gap-5">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -199,8 +221,8 @@ function StudentViewCoursesPage() {
                   className="cursor-pointer animate-trans-left hover:scale-105 card-appear"
                   key={courseItem?._id}
                 >
-                  <CardContent className="flex gap-4 p-4">
-                    <div className="w-48 h-32 flex-shrink-0">
+                  <CardContent className="flex flex-wrap gap-4 p-4">
+                    <div className="w-full max-w-48 h-32 flex-shrink-0">
                       <img
                         src={courseItem?.image}
                         className="w-ful h-full object-cover"

@@ -5,7 +5,7 @@ import StudentViewCommonFooter from "./footer";
 function StudentViewCommonLayout() {
   const location = useLocation();
   return (
-    <div>
+    <div className="min-h-screen">
       {!location.pathname.includes("course-progress") ? (
         <StudentViewCommonHeader />
       ) : null}

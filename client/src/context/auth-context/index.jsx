@@ -67,7 +67,7 @@ export default function AuthProvider({ children }) {
     try {
       
       const data = await checkAuthService();
-      if (data.success) {
+      if (data?.success) {
         setAuth({
           authenticate: true,
           user: data.data.user,
