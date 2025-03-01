@@ -10,7 +10,7 @@ function StudentViewCommonHeader() {
   const navigate = useNavigate();
   const [hideProfileItems, setHideProfileItems] = useState(true);
   console.log(hideProfileItems)
-  const { resetCredentials } = useContext(AuthContext);
+  const { auth, resetCredentials } = useContext(AuthContext);
 
   function handleLogout() {
     resetCredentials();
@@ -46,7 +46,7 @@ function StudentViewCommonHeader() {
 
     }
     else if(item?.label === "Profile") {
-      navigate(item?.link + "581");
+      navigate(item?.link + auth?.user?._id);
       setHideProfileItems(!hideProfileItems);
     }
     else {
@@ -56,9 +56,9 @@ function StudentViewCommonHeader() {
   }
 
   return (
-    <header className="flex flex-wrap items-center justify-between p-4 border-b relative bg-neutral-900 dark:bg-slate-900 text-white">
+    <header className="flex flex-wrap items-center justify-between p-4 border-b sticky top-0 z-10 bg-neutral-900 dark:bg-slate-900 text-white">
       <div className="flex items-center space-x-4">
-        <span onClick={()=>handleButtonNavigation({link:"/home"})} className="flex items-center hover:text-yellow-600">
+        <span onClick={()=>handleButtonNavigation({link:"/home"})} className="flex items-center hover:cursor-pointer hover:text-yellow-600">
           <GraduationCap className="h-8 w-8 mr-4 " />
           <span className="font-extrabold md:text-xl text-[14px]">
           MIC: E-LEARNING
@@ -91,12 +91,14 @@ function StudentViewCommonHeader() {
             <TvMinimalPlay className="w-8 h-8 cursor-pointer" />
           </div>
           
-          <div onClick={()=>setHideProfileItems(!hideProfileItems)} className="size-10 bg-white rounded-full hover:scale-105">
+          <div className="bg-white p-[2px] rounded-full bg-gradient-to-tr from-blue-700 to-red-800 border-dotted">
+          <div onClick={()=>setHideProfileItems(!hideProfileItems)} className="size-10 bg-white rounded-full hover:scale-105 hover:cursor-pointer">
             <img src={CustomProfile} alt="" />
+          </div>
           </div>
           <Card className={`absolute ${hideProfileItems?"card-inactive":"card-active"} pb-2 bg-zinc-100 dark:bg-card  shadow-inner z-10 w-full max-w-[200px] right-4 top-[4.9rem]`}>
             <CardHeader className="border-b-2 bg-green-7s00 text-center break-words ">
-              <CardTitle className="text-blue-900 font-bold dark:text-yellow-600">Jagadish Chennuru</CardTitle>
+              <CardTitle className="text-blue-900 font-bold hover:cursor-default dark:text-yellow-600">Jagadish Chennuru</CardTitle>
             </CardHeader>
             { profileConfig.map((item, index)=> (
             <CardContent key={index} className="p-0 px-2">

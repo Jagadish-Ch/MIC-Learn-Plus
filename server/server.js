@@ -35,7 +35,7 @@ mongoose
 //routes configuration
 app.use("/auth", authRoutes);
 app.use("/media", mediaRoutes);
-app.use("/user/details", getUserDetails);
+app.use("/user", getUserDetails);
 app.use("/instructor/course", instructorCourseRoutes);
 app.use("/student/course", studentViewCourseRoutes);
 app.use("/student/order", studentViewOrderRoutes);

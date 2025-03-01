@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { initialSignInFormData, initialSignUpFormData } from "@/config";
+import { initialSignInFormData, initialUserSignUpFormData, initialOtherSignUpFormData } from "@/config";
 import { checkAuthService, loginService, registerService } from "@/services";
 import { SuccessMessage, ErrorMessage, LoadingMessage, promiseToast } from "@/components/Alert-Toast";
 import { createContext, useEffect, useState } from "react";
@@ -8,7 +8,7 @@ export const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
   const [signInFormData, setSignInFormData] = useState(initialSignInFormData);
-  const [signUpFormData, setSignUpFormData] = useState(initialSignUpFormData);
+  const [signUpFormData, setSignUpFormData] = useState(initialUserSignUpFormData);
   const [auth, setAuth] = useState({
     authenticate: false,
     user: null,
@@ -17,6 +17,7 @@ export default function AuthProvider({ children }) {
 
   async function handleRegisterUser(event) {
     event.preventDefault();
+    
     const data = await registerService(signUpFormData);
 
     if(data?.success){
@@ -24,16 +25,19 @@ export default function AuthProvider({ children }) {
       SuccessMessage("Registered Successfully...!");
       setTimeout(() => {
         window.location.href = "/auth"
-      }, 5000);
+      }, 2000);
+      setLoading(false);
     }
     else{
+      setLoading(false);
       ErrorMessage(data.message);
     }    
   }
 
   async function handleLoginUser(event) {
     event.preventDefault();
-    loading && LoadingMessage(loading, "Please Wait");
+    
+    // loading && LoadingMessage(loading, "Loading Please Wait...");
     const data = await loginService(signInFormData);
     console.log(data, "datadatadatadatadata");
     
@@ -42,12 +46,15 @@ export default function AuthProvider({ children }) {
         "accessToken",
         JSON.stringify(data.data.accessToken)
       );
-      setLoading(false);
+      
       SuccessMessage("Login Successfully...!");
-      setAuth({
-        authenticate: true,
-        user: data.data.user,
-      });
+      setLoading(false);
+      setTimeout(() => {
+        setAuth({
+          authenticate: true,
+          user: data.data.user,
+        });
+      }, 1000);
       
 
     } else {
@@ -98,6 +105,7 @@ export default function AuthProvider({ children }) {
       authenticate: false,
       user: null,
     });
+    setSignInFormData(initialSignInFormData);
   }
 
   useEffect(() => {
@@ -111,6 +119,7 @@ export default function AuthProvider({ children }) {
   return ( 
     <AuthContext.Provider
       value={{
+        loading,
         signInFormData,
         setSignInFormData,
         signUpFormData,

@@ -10,6 +10,7 @@ import {
 import { Textarea } from "../ui/textarea";
 
 function FormControls({ formControls = [], formData, setFormData, buttonText }) {
+  setFormData
   function renderComponentByType(getControlItem) {
     let element = null;
     const currentControlItemValue = formData[getControlItem.name] || "";
@@ -22,6 +23,7 @@ function FormControls({ formControls = [], formData, setFormData, buttonText }) 
             name={getControlItem.name}
             placeholder={getControlItem.placeholder}
             type={getControlItem.type}
+            // autoComplete={"off"}
             value={currentControlItemValue}
             onChange={(event) =>
               setFormData({
@@ -101,12 +103,23 @@ function FormControls({ formControls = [], formData, setFormData, buttonText }) 
     <div 
       className={buttonText!=="Sign Up" ?"flex flex-col gap-3":"grid grid-cols-1 md:grid-cols-2 gap-3"}
     >
-      {formControls.map((controleItem) => (
+      {formControls.map((controleItem) => formData?.role === "user"|| formData?.role === ""? (
         <div key={controleItem.name}>
           <Label htmlFor={controleItem.name}>{controleItem.label}</Label>
           {renderComponentByType(controleItem)}
         </div>
-      ))}
+      ): (controleItem?.name === "role" || 
+        controleItem?.name === "userName" || 
+        controleItem?.name === "userEmail" || 
+        controleItem?.name === "password" || 
+        controleItem?.name === "userBranch") && 
+      (
+        <div key={controleItem.name}>
+          <Label htmlFor={controleItem.name}>{controleItem.label}</Label>
+          {renderComponentByType(controleItem)}
+        </div>
+      )
+      )}
     </div>
   );
 }

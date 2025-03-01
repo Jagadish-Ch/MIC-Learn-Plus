@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from "react";
-import TableComponent from "../common-table/TableComponent";
-import CommonTable from "../common-table/commonTable";
-import CommonTableCard from "../common-table/CommonTableCard";
+import React, { useContext } from "react";
+import { InstructorContext } from "@/context/instructor-context";
+import CommonTableCard from "@/components/instructor-view/common-table/CommonTableCard";
 
-const StudentsList = ({ allUsersList }) => {
-  console.log("UsersList: ", allUsersList);
+const BarChartReferTable = () => {
+  const { barChartClickedData } = useContext(InstructorContext);
 
   const usersListConfig = [
-    // {
-    //   name: "dateTime",
-    //   label: "Registered Date-Time",
-    //   options: {
-    //     filter: true,
-    //     sort: true,
-    //   },
-    // },
     {
       name: "_id",
       label: "User-Id",
@@ -72,34 +63,19 @@ const StudentsList = ({ allUsersList }) => {
         sort: true,
       },
     },
-    {
-      name: "totalEnrolledCourses",
-      label: "Total Courses Enrolled",
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: (totalEnrolledCourses) => (
-          <p className="text-center">{totalEnrolledCourses}</p>
-        ),
-      },
-    },
   ];
 
+  console.log("Clicked Data: ", barChartClickedData);
+
   return (
-    // <TableComponent
-    //     location={"UsersList"}
-    //     title={"Registered"}
-    //     config={usersListConfig}
-    //     data={usersListData}
-    // />
     <CommonTableCard
-      title={"REGISTERED USERS"}
+      title={barChartClickedData.title}
       rowClickable={true}
       location={"UsersList"}
       columns={usersListConfig}
-      data={allUsersList}
+      data={barChartClickedData.data || []}
     />
   );
 };
 
-export default StudentsList;
+export default BarChartReferTable;

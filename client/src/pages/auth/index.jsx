@@ -23,6 +23,7 @@ function AuthPage() {
     setSignUpFormData,
     handleRegisterUser,
     handleLoginUser,
+    loading,
   } = useContext(AuthContext);
 
   function handleTabChange(value) {
@@ -32,31 +33,44 @@ function AuthPage() {
   function checkIfSignInFormIsValid() {
     return (
       signInFormData &&
+      signInFormData.role !== "" &&
       signInFormData.userEmail !== "" &&
       signInFormData.password !== ""
     );
   }
 
   function checkIfSignUpFormIsValid() {
-    return (
-      signUpFormData &&
-      signUpFormData.userName !== "" &&
-      signUpFormData.userRollNumber !== "" &&
-      signUpFormData.userBranch !== "" &&
-      signUpFormData.userRegisteredSEM !== "" &&
-      signUpFormData.userDegree !== "" &&
-      signUpFormData.userMobileNumber !== "" &&
-      signUpFormData.userEmail !== "" &&
-      signUpFormData.password !== ""
-      
-    );
+    if(signUpFormData?.role==="user"){
+      return (
+        signUpFormData &&
+        signUpFormData.role !== "" &&
+        signUpFormData.userName !== "" &&
+        signUpFormData.userRollNumber !== "" &&
+        signUpFormData.userBranch !== "" &&
+        signUpFormData.userRegisteredSEM !== "" &&
+        signUpFormData.userDegree !== "" &&
+        signUpFormData.userMobileNumber !== "" &&
+        signUpFormData.userEmail !== "" &&
+        signUpFormData.password !== ""
+
+      );
+    } else {
+      return (
+        signUpFormData &&
+        signUpFormData.role !== "" &&
+        signUpFormData.userName !== "" &&
+        signUpFormData.userBranch !== "" &&
+        signUpFormData.userEmail !== "" &&
+        signUpFormData.password !== ""
+      )
+    }
   }
   console.log(signInFormData);
   
   
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center border-b text-white absolute w-full bg-slate-900">
+      <header className="px-4 lg:px-6 h-14 flex items-center border-b text-white sticky top-0 w-full bg-slate-900">
         <Link to={"/"} className="flex items-center justify-center dark:hover:text-yellow-600">
           <GraduationCap className="h-8 w-8 mr-4" />
           {/* <span className="font-extrabold text-xl">LEARN</span>
@@ -65,13 +79,13 @@ function AuthPage() {
           
         </Link>
       </header>
-      <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="flex items-center justify-center min-h-[calc(100vh-3.5rem)] bg-background">
         <AlertMessage/>
         <Tabs
           value={activeTab}
           defaultValue="signin"
           onValueChange={handleTabChange}
-          className="w-full max-w-screen-sm"
+          className="w-full max-w-screen-sm mx-4 my-2"
         >
           <TabsList className="grid w-full grid-cols-2 ">
             <TabsTrigger value="signin">Sign In</TabsTrigger>
@@ -93,6 +107,7 @@ function AuthPage() {
                   setFormData={setSignInFormData}
                   isButtonDisabled={!checkIfSignInFormIsValid()}
                   handleSubmit={handleLoginUser}
+                  loading={loading}
                 />
               </CardContent>
             </Card>
@@ -113,6 +128,7 @@ function AuthPage() {
                   setFormData={setSignUpFormData}
                   isButtonDisabled={!checkIfSignUpFormIsValid()}
                   handleSubmit={handleRegisterUser}
+                  loading={loading}
                 />
               </CardContent>
             </Card>

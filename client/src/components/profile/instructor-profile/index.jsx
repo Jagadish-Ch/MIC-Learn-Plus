@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfileSettings from '../profile-settings/ProfileSettings';
+import { getStudentDetailsService } from "../../../services";
 
 export const InstructorProfileData = 
 {
     img: "https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg",
-    name: "Ch.Jagadish",
+    name: "Jaga",
     role: "Instructor",
     emailId: "jagadishch@gmail.com",
     mobileNo: "90xxxxxxxx",
@@ -12,14 +13,15 @@ export const InstructorProfileData =
     providedCourses: "8",
     youtubeCourses: "6/8",
     ownCourses: "2/8",
-}
+} 
+
 
 export const InstructorProfileConfig = [
     {
-        id:"full-name",
+        id:"userName",
         type:"text",
         label: "Full Name",
-        value: "name",
+        value: "userName",
         placeholder: "Enter Full Name",
     },
     {
@@ -30,56 +32,77 @@ export const InstructorProfileConfig = [
         placeholder: "Student",
     },
     {
-        id:"email-id",
+        id:"userEmail",
         type:"text",
         label: "Email-Id",
-        value: "emailId",
+        value: "userEmail",
         placeholder: "Enter Email-Id",
     },
     {
-        id:"mobile-no",
+        id:"userMobileNumber",
         type:"text",
         label: "Mobile.No",
-        value: "mobileNo",
+        value: "userMobileNumber",
         placeholder: "Enter Mobile.No",
     },
     {
-        id:"dept-name",
+        id:"userBranch",
         type:"text",
         label: "Dept.Name",
-        value: "deptName",
+        value: "userBranch",
         placeholder: "Enter Dept.Name",
     },
     {
-        id:"provided-courses",
+        id:"providedCourses",
         type:"text",
         label: "No.of Provided Courses",
         value: "providedCourses",
         placeholder: "",
     },
     {
-        id:"youtube-courses",
+        id:"youtubeContent",
         type:"text",
         label: "YouTube Courses",
-        value: "youtubeCourses",
+        value: "youtubeContent",
         placeholder: "",
     },
     {
-        id:"own",
+        id:"collegeContent",
         type:"text",
         label: "Own Courses",
-        value: "ownCourses",
+        value: "collegeContent",
         placeholder: "",
     },
 ];
 
-const InstructorProfile = () => {
+const InstructorProfile = ({ profile }) => {
 
-  return (
+  console.log("profileId: ", profile?._id)
+    const [instructorProfileData, setInstructorProfileData] = useState(null);
+      
+      useEffect(() => {
+        const fetchData = async () => {
+          let userDetails = await getStudentDetailsService(profile?._id, "userDetails");
+    
+          setInstructorProfileData(userDetails);
+        };
+    
+        fetchData();
+      }, []);
+    
+      console.log("Details: ", instructorProfileData);
+
+    const profileData = {
+        ...instructorProfileData,
+        role:""
+    }
+
+  return ( instructorProfileData !== null &&
     <ProfileSettings
-      role={"instructorProfile"}
+      location={"instructorProfile"}
       ProfileConfig={InstructorProfileConfig}
-      ProfileData={InstructorProfileData}
+      ProfileData={instructorProfileData}
+      profile={profile}
     />
   )
 }

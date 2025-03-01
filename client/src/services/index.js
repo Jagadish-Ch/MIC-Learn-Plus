@@ -1,13 +1,8 @@
 import axiosInstance from "@/api/axiosInstance";
 import { ErrorMessage } from "@/components/Alert-Toast";
 
-
-
 export async function registerService(formData) {
-  const { data } = await axiosInstance.post("/auth/register", {
-    ...formData,
-    role: "user",
-  })
+  const { data } = await axiosInstance.post("/auth/register", formData)
   .catch((error)=> ErrorMessage(error.message));
 
   return data;
@@ -59,6 +54,13 @@ export async function mediaDeleteService(id) {
   return data;
 }
 
+export async function fetchInstructorDashboardDataService(reqType, filterDegree) {
+  
+  const { data } = await axiosInstance.get(`/user/get/${reqType}/${filterDegree}`);
+
+  return data;
+}
+
 export async function fetchInstructorCourseListService() {
   const { data } = await axiosInstance.get(`/instructor/course/get`);
 
@@ -84,6 +86,18 @@ export async function updateCourseByIdService(id, formData) {
     `/instructor/course/update/${id}`,
     formData
   );
+
+  return data;
+}
+
+export async function getRecommendCoursesService() {
+  const { data } = await axiosInstance.get(`/student/course-recommendation/get`);
+
+  return data;
+}
+
+export const getAllUsersDetailsService = async (role) => {
+  const { data } = await axiosInstance.get(`/user/all-details/${role}`);
 
   return data;
 }
@@ -214,8 +228,15 @@ export async function resetCourseProgressService(userId, courseId) {
   return data;
 }
 
-export async function recommendCourse(formData) {
+export async function recommendCourseService(formData) {
   const { data } = await axiosInstance.post(`/student/course-recommendation/add`, formData);
 
   return data;
 }
+
+export async function getStudentDetailsService(userId, resType) {
+  const { data }  = await axiosInstance.get(`/user/course-details/${userId}`);
+  // console.log("res: ", data)
+  if (resType === "userDetails" && data?.success) return data?.data?.userDetails;
+  return data;
+};

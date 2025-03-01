@@ -18,7 +18,7 @@ import {
 import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-function AddNewCoursePage() {
+function AddNewCoursePage({ pageType }) {
   const {
     courseLandingFormData,
     courseCurriculumFormData,
@@ -32,7 +32,7 @@ function AddNewCoursePage() {
   const navigate = useNavigate();
   const params = useParams();
 
-  console.log(params);
+  console.log("params: ",params);
 
   function isEmpty(value) {
     if (Array.isArray(value)) {

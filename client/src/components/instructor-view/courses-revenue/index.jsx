@@ -6,206 +6,47 @@ import React, { useState } from 'react'
 import TableComponent from '../common-table/TableComponent';
 import CommonTable from '../common-table/commonTable';
 import CommonTableCard from '../common-table/CommonTableCard';
+import { display } from '@mui/system';
 
-const InstructorRevenueOnCourses = ({ listOfCourses }) => {
-    
+const InstructorRevenueOnCourses = ({ listOfCourses, totalStudentsAndProfit }) => {
 
-    function calculateTotalStudentsAndProfit() {
-      const { totalStudents, totalProfit, studentList } = listOfCourses.reduce(
-        (acc, course) => {
-          const studentCount = course.students.length;
-          acc.totalStudents += studentCount;
-          acc.totalProfit += course.pricing * studentCount;
-          console.log("Course: ", course);
-          course.students.forEach((student) => {
-            acc.studentList.push({
-              courseTitle: course.title,
-              // studentId: student.studentRollNo,
-              studentName: student.studentName,
-              studentEmail: student.studentEmail,
-            });
-          });
-  
-          return acc;
-        },
-        {
-          totalStudents: 0,
-          totalProfit: 0,
-          studentList: [],
-        }
-      );
-  
-      return {
-        totalProfit,
-        totalStudents,
-        studentList,
-      };
-    }
-  
-    console.log(calculateTotalStudentsAndProfit());
+    // console.log("students ", totalStudentsAndProfit.studentList);
 
     const cardConfig = [
         {
           icon: BookOpenText,
           label: "Total Provided Courses",
-          // value: calculateTotalStudentsAndProfit().totalStudents,
+          value: listOfCourses.length || 0,
         },
         {
           icon: IndianRupeeIcon,
           label: "Total Revenue on Courses",
-          // value: calculateTotalStudentsAndProfit().totalProfit+"/-",
+          value: totalStudentsAndProfit.totalProfit+"/-" || 0,
         },
     ];
 
-    // const RevenueOnEachCourseData = [
-    //   {
-    //     courseName: "DSA",
-    //     instructorName: "Girish",
-    //     courseCategory:"Web Development Engineering",
-    //     coursePrice: 4,
-    //     enrolledTotalStudents: 8,
-    //     totalEarnOnCourse: 32,
-    //     contentType: "YouTube",
-    //   },
-    //   {
-    //     courseName: "DSA",
-    //     instructorName: "Girish",
-    //     courseCategory:"Web Development Engineering",
-    //     coursePrice: 4,
-    //     enrolledTotalStudents: 8,
-    //     totalEarnOnCourse: 32,
-    //     contentType: "Own",
-    //   },
-    // ];
+    const findTotalEarningsOnEachCourse = (students) => {
 
-    // const RevenueOnEachCourseConfig = [      
-    //   {
-    //     label: "Course Name",
-    //     value: "courseName",
-    //   },
-    //   {
-    //     label: "Instructor Name",
-    //     value: "instructorName",
-    //   },
-    //   {
-    //     label: "Category",
-    //     value: "courseCategory",
-    //   },
-    //   {
-    //     label: "Course Price",
-    //     value: "coursePrice",
-    //   },
-    //   {
-    //     label: "Enrolled Total Students",
-    //     value: "enrolledTotalStudents",
-    //   },
-    //   {
-    //     label: "Total Earn on Course",
-    //     value: "totalEarnOnCourse",
-    //   },
-    //   {
-    //     label: "Content Type",
-    //     value: "contentType",
-    //   },
-    // ];
+      let totalEarnings = 0;
 
-    // const AllCoursesBuyersData = [
-    //   {
-    //     dateTime: "3/2/2025 - (10:54 AM)",
-    //     rollNo: "21H71A0581",
-    //     studentName: "Ch.Jagadish",
-    //     courseName: "Web Development using MERN Stack",
-    //     emailId: "jagadishch581@gmail.com",
-    //     mobileNo: "90xxxxxxxx",
-    //     courseCategory: "Web Development",
-    //     coursePrice: 190,
-    //     contentType: "Own",
-    //   },
-    //   {
-    //     dateTime: "2/2/2025 - (10:54 AM)",
-    //     rollNo: "21H71A0581",
-    //     studentName: "Ch.Jagadish",
-    //     courseName: "React.js Full Course",
-    //     emailId: "jagadishch581@gmail.com",
-    //     mobileNo: "90xxxxxxxx",
-    //     courseCategory: "Frontend Development",
-    //     coursePrice: 0,
-    //     contentType: "YouTube",
-    //   },
-    // ];
+      students.forEach((eachStudent) => {
+        totalEarnings += parseInt(eachStudent.paidAmount)
+      })
 
-    // const AllCoursesBuyersConfig = [
-    //   {
-    //     label: "Course Enrolled Date-Time",
-    //     value: "dateTime",
-    //   },
-    //   {
-    //     label: "Student Roll.No",
-    //     value: "rollNo",
-    //   },
-    //   {
-    //     label: "Student Name",
-    //     value: "studentName",
-    //   },
-    //   {
-    //     label: "Course Name",
-    //     value: "courseName",
-    //   },
-    //   {
-    //     label: "Email-Id",
-    //     value: "emailId",
-    //   },
-    //   {
-    //     label: "Mobile No",
-    //     value: "mobileNo",
-    //   },
-    //   {
-    //     label: "Category",
-    //     value: "courseCategory",
-    //   },
-    //   {
-    //     label: "Course Price",
-    //     value: "coursePrice",
-    //   },
-    //   {
-    //     label: "Content Type",
-    //     value: "contentType",
-    //   },
-    // ];
-
-    const RevenueOnEachCourseData = [
-      {
-        courseName: "DSA",
-        instructorName: "Girish",
-        courseCategory:"Web Development Engineering",
-        coursePrice: 4,
-        enrolledTotalStudents: 8,
-        totalEarnOnCourse: 32,
-        contentType: "YouTube",
-      },
-      {
-        courseName: "DSA",
-        instructorName: "Girish",
-        courseCategory:"Software Development Engineering",
-        coursePrice: 4,
-        enrolledTotalStudents: 7,
-        totalEarnOnCourse: 32,
-        contentType: "YouTube",
-      },
-      {
-        courseName: "DSA",
-        instructorName: "Girish",
-        courseCategory:"Web Development Engineering",
-        coursePrice: 4,
-        enrolledTotalStudents: 9,
-        totalEarnOnCourse: 32,
-        contentType: "Own",
-      },
-    ];
-
+      return totalEarnings || 0;
+    }
     const RevenueOnEachCourseConfig = [      
       {
-        name: "courseName",
+        name: "_id",
+        label: "Course-Id",
+        options: {
+          display: false,
+          filter: true,
+          sort: true,
+        }
+      },
+      {
+        name: "title",
         label: "Course Name",
         options: {
           filter: true,
@@ -221,7 +62,7 @@ const InstructorRevenueOnCourses = ({ listOfCourses }) => {
         }
       },
       {
-        name: "courseCategory",
+        name: "category",
         label: "Category",
         options: {
           filter: true,
@@ -229,151 +70,58 @@ const InstructorRevenueOnCourses = ({ listOfCourses }) => {
         }
       },
       {
-        name: "coursePrice",
+        name: "pricing",
         label: "Course Price",
         options: {
           filter: true,
           sort: true,
+          customBodyRender: (pricing) => <p className='text-center'>{pricing}</p>
         }
       },
       {
-        name: "enrolledTotalStudents",
-        label: "Enrolled Total Students",
+        name: "students",
+        label: "Total Enrolled",
         options: {
           filter: true,
           sort: true,
+          customBodyRender: (students) =>  <p className='text-center'>{students.length}</p>, 
         }
       },
       {
-        name: "totalEarnOnCourse",
+        name: "students",
         label: "Total Earn on Course",
         options: {
           filter: true,
           sort: true,
-        }
-      },
-      {
-        name: "contentType",
-        label: "Content Type",
-        options: {
-          filter: true,
-          sort: true,
+          customBodyRender: (students) => (
+            <p className='text-center'>
+              {findTotalEarningsOnEachCourse(students)}
+            </p>
+          ),
         }
       },
     ];
 
-    const AllCoursesBuyersData = [
-      {
-        dateTime: "3/2/2025 - (10:54 AM)",
-        rollNo: "21H71A0581",
-        studentName: "Ch.Jagadish",
-        courseName: "Web Development using MERN Stack",
-        emailId: "jagadishch581@gmail.com",
-        mobileNo: "90xxxxxxxx",
-        courseCategory: "Web Development",
-        coursePrice: 190,
-        contentType: "Own",
-      },
-      {
-        dateTime: "3/2/2025 - (10:54 AM)",
-        rollNo: "21H71A0581",
-        studentName: "Ch.Jagadish",
-        courseName: "Web Development using MERN Stack",
-        emailId: "jagadishch581@gmail.com",
-        mobileNo: "90xxxxxxxx",
-        courseCategory: "Web Development",
-        coursePrice: 190,
-        contentType: "Own",
-      },
-      {
-        dateTime: "2/2/2025 - (10:54 AM)",
-        rollNo: "21H71A0581",
-        studentName: "Ch.Jagadish",
-        courseName: "React.js Full Course",
-        emailId: "jagadishch581@gmail.com",
-        mobileNo: "90xxxxxxxx",
-        courseCategory: "Frontend Development",
-        coursePrice: 0,
-        contentType: "YouTube",
-      },
-    ];
-
-    // const AllCoursesBuyersConfig = [
-    //   {
-    //     name: "Course Enrolled Date-Time",
-    //     selector: (row) => row.dateTime,
-    //     sortable: true,
-    //     reorder: true,
-    //   },
-    //   {
-    //     name: "Student Roll.No",
-    //     selector: (row) => row.rollNo,
-    //     sortable: true,
-    //     reorder: true,
-    //   },
-    //   {
-    //     name: "Student Name",
-    //     selector: (row) => row.studentName,
-    //     sortable: true,
-    //     reorder: true,
-    //   },
-    //   {
-    //     name: "Course Name",
-    //     selector: (row) => row.courseName,
-    //     sortable: true,
-    //     reorder: true,
-    //   },
-    //   {
-    //     name: "Email-Id",
-    //     selector: (row) => row.emailId,
-    //     sortable: true,
-    //     reorder: true,
-    //   },
-    //   {
-    //     name: "Mobile No",
-    //     selector: (row) => row.mobileNo,
-    //     sortable: true,
-    //     reorder: true,
-    //   },
-    //   {
-    //     name: "Category",
-    //     selector: (row) => row.courseCategory,
-    //     sortable: true,
-    //     reorder: true,
-    //   },
-    //   {
-    //     name: "Course Price",
-    //     selector: (row) => row.coursePrice,
-    //     sortable: true,
-    //     reorder: true,
-    //   },
-    //   {
-    //     name: "Content Type",
-    //     selector: (row) => row.contentType,
-    //     sortable: true,
-    //     reorder: true,
-    //   },
-    // ];
+    const AllCoursesBuyersData = totalStudentsAndProfit.studentList;
     
     const AllCoursesBuyersConfig = [
       {
-        name: "dateTime",
-        label: "Course Enrolled Date-Time",
+        name: "studentId",
+        label: "Id",
         options: {
+          display: false,
           filter: true,
           sort: true,
         }
-      
       },
-      {
-        name: "rollNo",
-        label: "Student Roll.No",
-        options: {
-          filter: true,
-          sort: true,
-        }
-      
-      },
+      // {
+      //   name: "studentRollNo",
+      //   label: "Student Roll.No",
+      //   options: {
+      //     filter: true,
+      //     sort: true,
+      //   }
+      // },
       {
         name: "studentName",
         label: "Student Name",
@@ -384,7 +132,7 @@ const InstructorRevenueOnCourses = ({ listOfCourses }) => {
       
       },
       {
-        name: "courseName",
+        name: "courseTitle",
         label: "Course Name",
         options: {
           filter: true,
@@ -393,7 +141,7 @@ const InstructorRevenueOnCourses = ({ listOfCourses }) => {
       
       },
       {
-        name: "emailId",
+        name: "studentEmail",
         label: "Email-Id",
         options: {
           filter: true,
@@ -402,38 +150,14 @@ const InstructorRevenueOnCourses = ({ listOfCourses }) => {
       
       },
       {
-        name: "mobileNo",
-        label: "Mobile No",
-        options: {
-          filter: true,
-          sort: true,
-        }
-      
-      },
-      {
-        name: "courseCategory",
-        label: "Category",
-        options: {
-          filter: true,
-          sort: true,
-        }
-      
-      },
-      {
-        name: "coursePrice",
+        name: "paidAmount",
         label: "Course Price",
         options: {
           filter: true,
           sort: true,
-        }
-      
-      },
-      {
-        name: "contentType",
-        label: "Content Type",
-        options: {
-          filter: true,
-          sort: true,
+          customBodyRender: (paidAmount) => (
+            <p className='text-center'>{paidAmount}</p>
+          ),
         }
       
       },
@@ -452,17 +176,17 @@ const InstructorRevenueOnCourses = ({ listOfCourses }) => {
                   <item.icon className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{item.value|| 80}</div>
+                  <div className="text-2xl font-bold">{item.value|| 0}</div>
                 </CardContent>
               </Card>
             ))}
           </div>
           <CommonTableCard
             pageLocation={"RevenueOnEachCourses"}
-            // rowClickable={true}
+            rowClickable={true}
             title={"Revenue On Each Course"}
             columns={RevenueOnEachCourseConfig}
-            data={RevenueOnEachCourseData}
+            data={listOfCourses}
           />
           <CommonTableCard 
             location={"AllCoursesBuyers"}
@@ -471,102 +195,6 @@ const InstructorRevenueOnCourses = ({ listOfCourses }) => {
             columns={AllCoursesBuyersConfig}
             data={AllCoursesBuyersData}
           />
-          {/* <Card>
-            <CardHeader>
-
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Course</TableHead>
-                    <TableHead>Students</TableHead>
-                    <TableHead>Revenue</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {listOfCourses && listOfCourses.length > 0
-                    ? listOfCourses.map((course, index) => (
-                        <TableRow key={index}>
-                          <TableCell className="font-medium">
-                            {course?.title}
-                          </TableCell>
-                          <TableCell>{course?.students?.length}</TableCell>
-                          <TableCell>
-                            ${course?.students?.length * course?.pricing}
-                          </TableCell>
-                          <TableCell className="text-right dark:text-black">
-                            <Button
-                              onClick={() => {
-                                navigate(`/instructor/edit-course/${course?._id}`);
-                              }}
-                              variant="ghost"
-                              size="sm"
-                            >
-                              <Edit className="h-6 w-6" />
-                            </Button>
-                            <Button variant="ghost" size="sm">
-                              <Delete className="h-6 w-6" />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    : null}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card> */}
-          
-          {/* <Card>
-            <CardHeader>
-              <CardTitle>
-                <h2 className='text-center text-xl mb-4'>Students List</h2>
-                <div className="flex justify-between flex-wrap gap-4">
-                <input 
-                  type="search" 
-                  placeholder="Search" 
-                  className="p-2 dark:bg-transparent border-2 w-full max-w-[300px] rounded-md"
-                  onChange={(e)=>setSearch(e.target.value)}
-                />
-
-                </div>
-              </CardTitle>
-
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <Table className="w-full">
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Course Name</TableHead>
-                      <TableHead>Student Name</TableHead>
-                      <TableHead>Student Email</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {calculateTotalStudentsAndProfit().studentList.filter((item)=>{
-                      return search.toLowerCase() ==='' 
-                      ? item
-                      : Object.values(item).some((value) =>
-                        value.toString().toLowerCase().includes(search.toLowerCase())
-                      )
-                    }).map(
-                      (studentItem, index) => (
-                        <TableRow key={index}>
-                          <TableCell className="font-medium">
-                            {studentItem.courseTitle}
-                          </TableCell>
-                          <TableCell>{studentItem.studentName}</TableCell>
-                          <TableCell>{studentItem.studentEmail}</TableCell>
-                        </TableRow>
-                      )
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
-            </CardContent>
-          </Card> */}
         </div>
     </div>
   )

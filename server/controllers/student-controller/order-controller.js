@@ -165,6 +165,8 @@ const capturePaymentAndFinalizeOrder = async (req, res) => {
           studentId: order.userId,
           studentName: order.userName,
           studentEmail: order.userEmail,
+          // studentBranch: order.userBranch,
+          // studentDegree: order.userDegree,
           paidAmount: order.coursePricing,
         },
       },

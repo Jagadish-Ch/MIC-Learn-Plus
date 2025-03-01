@@ -107,9 +107,13 @@ const CommonTableCard = ({ pageLocation, title, columns, data, rowClickable }) =
     viewColumns: true,
     filter: true,
     onRowClick: (rowData) => {
-      if(rowClickable) {
+      if(rowClickable && pageLocation!=="CreateCourse" && pageLocation!=="RevenueOnEachCourses") {
         console.log("Clicked ", rowData)
-        window.open("http://localhost:5173/instructor/info/"+rowData[1])
+        window.open("http://localhost:5173/instructor/info/"+rowData[0])
+      }
+      else if(rowClickable && (pageLocation=="CreateCourse" || pageLocation=="RevenueOnEachCourses")) {
+        console.log("Clicked ", rowData)
+        window.open("http://localhost:5173/instructor/edit-course/"+rowData[0])
       }
       else {
         console.log("Click Disabled")
@@ -130,7 +134,7 @@ const CommonTableCard = ({ pageLocation, title, columns, data, rowClickable }) =
     <Card className="p-6 mt-2">
     <ThemeProvider theme={getMUITheme()}>
     <MUIDataTable
-        title={title||sampleTitle}
+        title={title}
         data={data || sampleData}
         columns={columns || sampleColumns}
         options={options}

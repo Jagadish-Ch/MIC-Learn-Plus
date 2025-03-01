@@ -42,6 +42,7 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --side-nav-width: 14rem;
   }
   /* .dark {
     --background: 0 0% 3.9%; 
@@ -198,15 +199,20 @@ body::-webkit-scrollbar-thumb {
 }
 
 .nav-active{
-  width: 14rem;
+  width: var(--side-nav-width);
   transition: width 1s ease-in-out;
 }
 
 .nav-inactive{
-  width: 4rem;
+  --side-nav-width: 4rem;
+  width: var(--side-nav-width);
   transition: width 1s ease;
 }
 
+.calc-main-w{
+  width: 100%;
+  max-width: calc(100%-var(--side-nav-width));
+}
 
 @media (min-width: 640px) {
   .section {

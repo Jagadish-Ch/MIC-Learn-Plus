@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Rnd } from "react-rnd";
 import ReactQuill from "react-quill";
 import EditorToolbar, { modules, formats } from "./EditorToolbar";
@@ -25,13 +25,25 @@ import { clamp } from "framer-motion";
     const [template, setTemplate] = useState(null);
     const [templateSize, setTemplateSize] = useState({ width: 800, height: 600 });
     const [EditMode, setEditMode] = useState(true);
+    const [styles, setSyles] = useState({});
+    const [lock, setLock] = useState(false);
+
+    const quillEditorRef = useRef()
   
     const addTextBox = () => {
       setEditMode(true);
       setTextBoxes([
         ...textBoxes,
-        { id: Date.now(), x: 0, y: 0, width: 20, height: 10, text: "Enter text...", 
-          // fontSize: 24,
+        { id: Date.now(), 
+          x: 0, 
+          y: 0, 
+          width: 20, 
+          height: 10, 
+          text: "Enter text...", 
+          fontSize: "8px",
+          fontFamily: "Arial",
+          textAlign: "left",
+          color: "#000000",
         },
       ]);
     };
@@ -51,15 +63,33 @@ import { clamp } from "framer-motion";
         y: (box.y / templateSize.height) * 100, // Convert to percentage
         width: (box.width / templateSize.width) * 100, // Convert to percentage
         height: (box.height / templateSize.height) * 100, // Convert to percentage
+        fontSize: box.fontSize,
+          fontFamily: box.fontFamily,
+          textAlign: box.textAlign,
+          color: box.color,
         // fontSize: (box.height), // 36
       }));
-      setEditMode(false);
+      setEditMode(!EditMode);
       console.log("Saved Configuration:", configuration);
       // Save `configuration` and `template` to the backend
     };
 
     console.log("text Boxes: ", textBoxes);
-  
+
+    const extractStyles = (index) => {
+      if (quillEditorRef.current) {
+        const editor = quillEditorRef.current.getEditor();
+        const selection = editor.getSelection();
+        if (selection) {
+          const format = editor.getFormat(selection.index);
+          const updatedTextBox = [...textBoxes];
+          updatedTextBox[index].fontSize = format.size || "20px";
+          updatedTextBox[index].fontFamily = format.font || "Arial";
+          updatedTextBox[index].textAlign = format.align || "center";
+          updatedTextBox[index].color = format.color || "#000000";
+        }
+      }
+    };
     return (
       <div className="p-4 h-screen overflow-auto">
         <h2 className="text-xl font-bold mb-4">Admin Panel</h2>
@@ -79,10 +109,10 @@ import { clamp } from "framer-motion";
           onClick={saveConfiguration}
           className="bg-green-500 text-white px-4 py-2 rounded"
         >
-          Save Configuration
+          {EditMode?"Save Configuration":"Edit Configuration"}
         </button>
         <button
-          onClick={()=>setEditMode(!EditMode)}
+          onClick={()=>setLock(!lock)}
           className="bg-orange-600 text-white px-4 py-2 rounded"
         >
           {EditMode?"Disable Edit":"Edit Mode"}
@@ -153,16 +183,20 @@ import { clamp } from "framer-motion";
                 // console.log("Converted Font-Size: " ,updatedBoxes[index].fontSize);
                 setTextBoxes(updatedBoxes);
               }}
+              // disableDragging={lock}
+              // enableResizing={!lock}
             >
               <div className="text-editor h-full w-full">
               <EditorToolbar/>
               <ReactQuill
+                ref={quillEditorRef}
                 theme="bubble"
                 value={box.text}
                 onChange={(value) => {
                   const updatedBoxes = [...textBoxes];
                   updatedBoxes[index].text = value;
                   setTextBoxes(updatedBoxes);
+                  extractStyles(index); // Update styles on change
                 }}
                 // modules={{toolbar:toolbarOptions}}
                 modules={modules}
@@ -176,10 +210,16 @@ import { clamp } from "framer-motion";
             key={box.id}
             className="absolute text-black border-2 border-gray-300"
             style={{
+              display:"flex",
               top: `${(box.y) }%`,
               left: `${(box.x) }%`,
               width: `${(box.width) }%`,
               height: `${(box.height) }%`,
+              justifyContent: box.textAlign,
+              alignItems: "center",
+              fontSize: `clamp(1px, ${box.size ? box.size.replace("px", "") / 10 : 2}vw, 18px)`,
+              fontFamily: box.fontFamily,
+              color: box.color,
               overflow: "hidden",
               // fontSize: `${(box.fontSize) }px`,
               // padding: "12px 15px"

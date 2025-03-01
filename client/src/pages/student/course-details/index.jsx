@@ -36,7 +36,9 @@ function StudentViewCourseDetailsPage() {
   const [displayCurrentVideoFreePreview, setDisplayCurrentVideoFreePreview] =
     useState(null);
   const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
+  const [freeCourseForThisUser, setFreeCourseForThisUser] = useState(false);
   const [approvalUrl, setApprovalUrl] = useState("");
+  
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
@@ -75,10 +77,13 @@ function StudentViewCourseDetailsPage() {
   }
 
   async function handleCreatePayment() {
+    
     const paymentPayload = {
       userId: auth?.user?._id,
       userName: auth?.user?.userName,
       userEmail: auth?.user?.userEmail,
+      userBranch: auth?.user?.userBranch,
+      userDegree: auth?.user?.userDegree,
       orderStatus: "pending",
       paymentMethod: "paypal",
       paymentStatus: "initiated",
@@ -236,7 +241,7 @@ function StudentViewCourseDetailsPage() {
               </div>
               <div className="mb-4">
                 <span className="text-3xl font-bold dark:text-yellow-600">
-                  ${studentViewCourseDetails?.pricing}
+                  Rs.{studentViewCourseDetails?.pricing}
                 </span>
               </div>
               <Button 

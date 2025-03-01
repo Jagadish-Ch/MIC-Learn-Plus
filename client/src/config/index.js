@@ -1,10 +1,31 @@
+export const roleTypeOptions = [
+  { id:"user", label:"User" },
+  { id:"instructor", label:"Instructor" },
+  { id:"admin", label:"Admin" },
+]
+
 export const degreeTypeOptions = [
   { id:"B-Tech", label:"B-Tech"},
   { id:"M-Tech", label:"M-Tech"},
-  { id:"Diploma", label:"Diploma"},
+  { id:"Others", label:"Others"},
 ]
 
 export const signUpFormControls = [
+  {
+    name: "role",
+    label: "Register As",
+    placeholder: "Select Login Type",
+    type: "text",
+    componentType: "select",
+    options: roleTypeOptions,
+  },
+  {
+    name: "collegeName",
+    label: "College Name",
+    placeholder: "Enter your College Name",
+    type: "text",
+    componentType: "input",
+  },
   {
     name: "userName",
     label: "User Name",
@@ -51,14 +72,14 @@ export const signUpFormControls = [
   {
     name: "userEmail",
     label: "User Email",
-    placeholder: "Enter your user email",
+    placeholder: "Enter your Email-Id",
     type: "email",
     componentType: "input",
   },
   {
     name: "password",
     label: "Password",
-    placeholder: "Enter your password",
+    placeholder: "Enter your Password",
     type: "password",
     componentType: "input",
   },
@@ -66,27 +87,38 @@ export const signUpFormControls = [
 
 export const signInFormControls = [
   {
+    name: "role",
+    label: "Login As",
+    placeholder: "Select Login Type",
+    type: "text",
+    componentType: "select",
+    options: roleTypeOptions,
+  },
+  {
     name: "userEmail",
     label: "User Email",
-    placeholder: "Enter your user email",
+    placeholder: "Enter your Email-Id",
     type: "email",
     componentType: "input",
   },
   {
     name: "password",
     label: "Password",
-    placeholder: "Enter your password",
+    placeholder: "Enter your Password",
     type: "password",
     componentType: "input",
   },
 ];
 
 export const initialSignInFormData = {
+  role: "",
   userEmail: "",
   password: "",
 };
 
-export const initialSignUpFormData = {
+export const initialUserSignUpFormData = {
+  role: "",
+  collegeName: "",
   userName: "",
   userRollNumber: "",
   userBranch: "",
@@ -97,17 +129,18 @@ export const initialSignUpFormData = {
   password: "",
 };
 
+export const initialOtherSignUpFormData = {
+  role: "",
+  userName: "",
+  userBranch: "",
+  userEmail: "",
+  password: "",
+};
+
 export const languageOptions = [
   { id: "english", label: "English" },
-  { id: "spanish", label: "Spanish" },
-  { id: "french", label: "French" },
-  { id: "german", label: "German" },
-  { id: "chinese", label: "Chinese" },
-  { id: "japanese", label: "Japanese" },
-  { id: "korean", label: "Korean" },
-  { id: "portuguese", label: "Portuguese" },
-  { id: "arabic", label: "Arabic" },
-  { id: "russian", label: "Russian" },
+  { id: "telugu", label: "Telugu" },
+  { id: "hindi", label: "Hindi" },
 ];
 
 export const courseLevelOptions = [

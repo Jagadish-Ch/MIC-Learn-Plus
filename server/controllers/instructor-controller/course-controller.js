@@ -1,4 +1,5 @@
 const Course = require("../../models/Course");
+const CourseRecommendation = require("../../models/CourseRecommendation");
 
 const addNewCourse = async (req, res) => {
   try {
@@ -43,17 +44,112 @@ const getCourseDetailsByID = async (req, res) => {
   try {
     const { id } = req.params;
     const courseDetails = await Course.findById(id);
+    const courseRecommendDetails = await CourseRecommendation.findById(id);
 
-    if (!courseDetails) {
-      return res.status(404).json({
-        success: false,
-        message: "Course not found!",
+    if (courseDetails) {
+      return res.status(200).json({
+        success: true,
+        data: courseDetails,
+      });
+    }
+    if (courseRecommendDetails) {
+      console.log(courseRecommendDetails)
+      // const data = {
+      //   instructorId: "",
+      //   instructorName: "",
+      //   date: "",
+      //   title: courseRecommendDetails?.courseName,
+      //   category: courseRecommendDetails?.category,
+      //   level: "",
+      //   primaryLanguage: "",
+      //   subtitle: "",
+      //   description: courseRecommendDetails?.description,
+      //   image: "",
+      //   welcomeMessage: "",
+      //   pricing: 0,
+      //   objectives: "",
+      //   // students: [
+      //   //   {
+      //   //     studentId: String,
+      //   //     studentName: String,
+      //   //     studentEmail: String,
+      //   //     paidAmount: String,
+      //   //   },
+      //   // ],
+      //   curriculum: [{
+      //     title: "",
+      //     videoUrl: courseRecommendDetails?.lectures[0].url,
+      //     public_id: "",
+      //     freePreview: false,
+      //   }],
+      //   isPublised: false,
+      // }
+
+      const data = {
+        _id: courseRecommendDetails?._id,
+        instructorId: "",
+        instructorName: "",
+        date: "1735034514952",
+        title: courseRecommendDetails?.courseName,
+        category: courseRecommendDetails?.category,
+        level: "",
+        primaryLanguage: "",
+        subtitle: "",
+        description: courseRecommendDetails?.description,
+        image:
+          "",
+        welcomeMessage: "",
+        pricing:  "",
+        objectives: "check, console",
+        students: [
+          {
+            studentId: "",
+            studentName: "",
+            studentEmail: "",
+            paidAmount: "",
+            _id: "",
+          },
+          {
+            studentId: "",
+            studentName: "",
+            studentEmail: "",
+            paidAmount: "",
+            _id: "",
+          },
+        ],
+        curriculum: [
+          {
+            title: "",
+            videoUrl:
+              "",
+            public_id: "",
+            freePreview: false,
+            _id: "",
+          },
+          {
+            title: "",
+            videoUrl:
+              "",
+            public_id: "",
+            freePreview: false,
+            _id: "",
+          },
+        ],
+        isPublised: true,
+        __v: "0",
+      };
+
+      console.log("data: ",data)
+
+      return res.status(200).json({
+        success: true,
+        data: data,
       });
     }
 
-    res.status(200).json({
-      success: true,
-      data: courseDetails,
+    res.status(404).json({
+      success: false,
+      message: "Course not found!",
     });
   } catch (e) {
     console.log(e);

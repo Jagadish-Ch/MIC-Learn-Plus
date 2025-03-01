@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { getElementAtEvent, Pie } from "react-chartjs-2";
@@ -6,12 +6,13 @@ import { getElementAtEvent, Pie } from "react-chartjs-2";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import StudentProfile, {
   StudentProfileConfig,
-  StudentProfileData,
 } from "../student-profile";
 import ProfileSettings from "../profile-settings/ProfileSettings";
 import { useDarkMode } from "@/context/dark-mode-context/DarkModeContext";
 import CommonTableCard from "@/components/instructor-view/common-table/CommonTableCard";
+import { getStudentDetailsService } from "../../../services";
 import {styled} from "@mui/material/styles";
+import { useEffect } from "react";
 
 ChartJS.register(
   ArcElement,
@@ -29,16 +30,23 @@ const StyledTableCell = styled('td')(({ theme }) => ({
   },
 }));
 
-const StudentActivityPage = ({ role }) => {
+const StudentActivityPage = ({ location, authUserId }) => {
   const { id } = useParams();
 
   const { darkMode, setDarkMode } = useDarkMode();
+  const [response, setResponse] = useState(null);
+  const [userDetails, setUserDetails] = useState(null);
 
+  const studentProfileData = userDetails?.userDetails
+
+  let overallCoursesStatus = userDetails?.overallCoursesStatus
   const status = [
-    { value: 1, label: "Completed" },
-    { value: 1, label: "In-Progress" },
-    { value: 4, label: "InCompleted" },
+    { value: overallCoursesStatus?.completed, label: "Completed" },
+    { value: overallCoursesStatus?.inProgress, label: "In-Progress" },
+    { value: overallCoursesStatus?.inComplete, label: "InComplete" },
   ];
+
+  // console.log("status: ", status)
 
   const barChart1Data = {
     labels: status.map((section) => section.label),
@@ -115,7 +123,7 @@ const StudentActivityPage = ({ role }) => {
 
   const ActivityConfig = [
     {
-      name: "dateTime",
+      name: "dateOfPurchase",
       label: "Course Enrolled Date-Time",
       options: {
         filter: true,
@@ -123,7 +131,7 @@ const StudentActivityPage = ({ role }) => {
       }
     },
     {
-      name: "courseName",
+      name: "title",
       label: "Course Name",
       options: {
         filter: true,
@@ -139,39 +147,51 @@ const StudentActivityPage = ({ role }) => {
       }
     },
     {
-      name: "lecturesCount",
+      name: "lectures",  // lectures.totalLectures
       label: "No.of Lectures",
       options: {
         filter: true,
         sort: true,
+        customBodyRender: (lectures) => {
+          return lectures.totalLectures
+        },
       }
     },
     {
-      name: "inCompleted",
+      name: "lectures",  // lectures.lectureStatus.inComplete
       label: "In-Complete",
       options: {
         filter: true,
         sort: true,
+        customBodyRender: (lectures) => {
+          return lectures.lectureStatus.inComplete
+        },
       }
     },
     {
-      name: "progress",
+      name: "lectures",  // lectures.lectureStatus.inProgress
       label: "In-Progress",
       options: {
         filter: true,
         sort: true,
+        customBodyRender: (lectures) => {
+          return lectures.lectureStatus.inProgress
+        },
       }
     },
     {
-      name: "completed",
+      name: "lectures",  // lectures.lectureStatus.completed
       label: "Completed",
       options: {
         filter: true,
         sort: true,
+        customBodyRender: (lectures) => {
+          return lectures.lectureStatus.completed
+        },
       }
     },
     {
-      name: "courseType",
+      name: "courseType",  // not in data
       label: "Course Type",
       options: {
         filter: true,
@@ -179,7 +199,7 @@ const StudentActivityPage = ({ role }) => {
       }
     },
     {
-      name: "courseCategory",
+      name: "category", 
       label: "Category",
       options: {
         filter: true,
@@ -189,63 +209,28 @@ const StudentActivityPage = ({ role }) => {
     },
   ];
 
-  const ActivityData = [
-    {
-      dateTime: "3/2/2025 - (10:54 AM)",
-      courseName: "DSA",
-      instructorName: "Girish Chandra",
-      lecturesCount: 10,
-      inCompleted: 10,
-      progress: 0,
-      completed: 0,
-      courseType: "OWN",
-      courseCategory: "Programming",
-    },
-    {
-      dateTime: "3/2/2025 - (10:54 AM)",
-      courseName: "DAA",
-      instructorName: "Girish Chandra",
-      lecturesCount: 5,
-      inCompleted: 1,
-      progress: 1,
-      completed: 3,
-      courseType: "YouTube",
-      courseCategory: "Programming",
-    },
-    {
-      dateTime: "10/2/2025 - (10:54 AM)",
-      courseName: "Java",
-      instructorName: "Madhu",
-      lecturesCount: 10,
-      inCompleted: 0,
-      progress: 0,
-      completed: 10,
-      courseType: "OWN",
-      courseCategory: "Programming",
-    },
-  ];
+  const ActivityData = userDetails?.allCoursesDetails
 
-  const getStudentDetails = (rollNo) => {
-    const data = {
-      rollNo,
-    };
-    const res = {
-      success: true,
-      message: "Student Found",
-      data: data,
-    };
-    return res;
-  };
+  useEffect(()=> {
+    const fetchData = async () => {
+      let result = await getStudentDetailsService(id);
+      console.log("Response: ",result)
+      setResponse(result);
+      setUserDetails(result?.data);
+    }
 
-  const response = getStudentDetails(id);
+    fetchData();
+  }, [])
+
+  console.log("User Details: ", userDetails);
 
   return (
     <div className="flex justify-start min-h-screen min-w-full flex-col">
       {response?.success ? (
         <div className="bg-reds-800">
-          <nav className="w-full h-[50px] sticky z-10 top-0 left-0 bg-slate-950 border-b-2">
+          {/* <nav className="w-full h-[50px] sticky z-auto top-0 left-0 bg-slate-950 border-b-2">
             <div className="w-full"></div>
-          </nav>
+          </nav> */}
           {/* <div className='flex-wrap  gap-4 p-4 w-full max-w-[calc(100%-200px)] bg-green-600 flex sm:flex-col md:flex-row'> */}
           <div className="mx-auto w-full max-max-w-[100%-80px] top-0 p-4 md:p-6 md:max-w-[888px] lg:max-w-screen-xl  rbg-green-600">
             {" "}
@@ -262,9 +247,9 @@ const StudentActivityPage = ({ role }) => {
                                     </CardContent>
                                 </Card> */}
                   <ProfileSettings
-                    role={role}
+                    location={location}
                     ProfileConfig={StudentProfileConfig}
-                    ProfileData={StudentProfileData}
+                    ProfileData={studentProfileData}
                   />
                 </section>
               </section>
@@ -287,18 +272,22 @@ const StudentActivityPage = ({ role }) => {
                                     
                                 </Card> */}
                 <Card className="rbg-pink-800 justify-items-center p-4 w-full h-full max-h-max">
+                  <h1 className="text-3xl text-center text-green-800 mb-4 break-words">COURSES STATUS</h1>
+                    {userDetails?.enrolledCourses!==0 && userDetails !== null
+                    ?( 
                   <section className="w-full max-w-[300px]">
-                  <h1 className="text-3xl text-center mb-4 break-words">COURSES STATUS</h1>
                   <div className="w-full h-auto">
-                    <Pie
-                      data={barChart1Data}
-                      options={options1}
-                      redraw={true}
-                      onClick={onClickChart2}
-                      ref={chartRef}
-                    ></Pie>
+                      <Pie
+                        data={barChart1Data}
+                        options={options1}
+                        redraw={true}
+                        onClick={onClickChart2}
+                        ref={chartRef}
+                      ></Pie>
                   </div>
                   </section>
+                    ): (<p className="text-2xl text-center text-red-800">User Not Enrolled any Course</p>)
+                    }
                 </Card>
                 {/* <div className="w-full h-full max-h-[60px] p-1"> */}
                   <CommonTableCard 
@@ -314,7 +303,7 @@ const StudentActivityPage = ({ role }) => {
           </div>
         </div>
       ) : (
-        <h1 className="text-3xl text-center">Student Not Found...!</h1>
+        <h1 className="text-3xl text-center">{response?.message || "User Not Found...!"}</h1>
       )}
     </div>
   );

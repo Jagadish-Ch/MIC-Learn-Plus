@@ -1,13 +1,15 @@
+import { initialOtherSignUpFormData } from "@/config";
 import { Button } from "../ui/button";
 import FormControls from "./form-controls";
 
 function CommonForm({
   handleSubmit,
-  buttonText,
+  buttonText = "Submit",
   formControls = [],
   formData,
   setFormData,
   isButtonDisabled = false,
+  loading,
 }) {
   console.log("Form data : ", formData)
 
@@ -21,7 +23,7 @@ function CommonForm({
         setFormData={setFormData}
       />
       <Button disabled={isButtonDisabled} type="submit" className="mt-5 w-full">
-        {buttonText || "Submit"}
+        {buttonText}
       </Button>
     </form>
   );
