@@ -33,9 +33,6 @@ mongoose
   .catch((e) => console.log(e));
 
 //routes configuration
-app.get("/home", (req, res) => {
-res.json({message:"Running"})
-})
 app.use("/auth", authRoutes);
 app.use("/media", mediaRoutes);
 app.use("/user", getUserDetails);
