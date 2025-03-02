@@ -9,7 +9,7 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 
-function FormControls({ formControls = [], formData, setFormData, buttonText }) {
+function FormControls({ formControls = [], formData, setFormData, buttonText, pageLocation }) {
   setFormData
   function renderComponentByType(getControlItem) {
     let element = null;
@@ -108,11 +108,13 @@ function FormControls({ formControls = [], formData, setFormData, buttonText }) 
           <Label htmlFor={controleItem.name}>{controleItem.label}</Label>
           {renderComponentByType(controleItem)}
         </div>
-      ): (controleItem?.name === "role" || 
-        controleItem?.name === "userName" || 
-        controleItem?.name === "userEmail" || 
-        controleItem?.name === "password" || 
-        controleItem?.name === "userBranch") && 
+      ): 
+      ( pageLocation === "AdminInstructorSignUpForm" &&
+        // Disable Render for Below form-fields
+        controleItem?.name === "collegeName" ||
+        controleItem?.name === "userRollNumber" ||
+        controleItem?.name === "userRegisteredSEM" ||
+        controleItem?.name === "userDegree") ||
       (
         <div key={controleItem.name}>
           <Label htmlFor={controleItem.name}>{controleItem.label}</Label>

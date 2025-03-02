@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import FormControls from "./form-controls";
 
 function CommonForm({
+  pageLocation,
   handleSubmit,
   buttonText = "Submit",
   formControls = [],
@@ -17,6 +18,7 @@ function CommonForm({
     <form onSubmit={handleSubmit}>
       {/* render form controls here */}
       <FormControls
+        pageLocation={pageLocation}
         buttonText={buttonText}
         formControls={formControls}
         formData={formData}

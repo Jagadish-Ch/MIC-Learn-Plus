@@ -90,6 +90,7 @@ function CourseCurriculum() {
           setMediaUploadProgress(false);
         }
       } catch (error) {
+        setMediaUploadProgress(false);
         console.log(error);
       }
     }
@@ -176,6 +177,7 @@ function CourseCurriculum() {
         setMediaUploadProgress(false);
       }
     } catch (e) {
+      setMediaUploadProgress(false);
       console.log(e);
     }
   }

@@ -16,8 +16,12 @@ function CourseSettings() {
     setMediaUploadProgressPercentage,
   } = useContext(InstructorContext);
 
+  const pageLocation = "course-settings";
+  
   async function handleImageUploadChange(event) {
     const selectedImage = event.target.files[0];
+
+    
 
     if (selectedImage) {
       const imageFormData = new FormData();
@@ -48,7 +52,7 @@ function CourseSettings() {
         <CardTitle>Course Settings</CardTitle>
       </CardHeader>
       <div className="p-4">
-        {mediaUploadProgress ? (
+        {mediaUploadProgress && pageLocation==="course-settings" ? (
           <MediaProgressbar
             isMediaUploading={mediaUploadProgress}
             progress={mediaUploadProgressPercentage}

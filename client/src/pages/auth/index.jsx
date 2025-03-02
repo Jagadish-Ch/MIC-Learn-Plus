@@ -122,6 +122,7 @@ function AuthPage() {
               </CardHeader>
               <CardContent className="space-y-2 ">
                 <CommonForm
+                  pageLocation={"AdminInstructorSignUpForm"}
                   formControls={signUpFormControls}
                   buttonText={"Sign Up"}
                   formData={signUpFormData}
