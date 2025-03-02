@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import TableComponent from "../common-table/TableComponent";
-import CommonTable from "../common-table/commonTable";
+// import TableComponent from "../common-table/TableComponent";
+// import CommonTable from "../common-table/commonTable";
 import CommonTableCard from "../common-table/CommonTableCard";
 
 const StudentsList = ({ allUsersList }) => {

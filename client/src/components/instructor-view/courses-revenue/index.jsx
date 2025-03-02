@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { BookOpenText, Delete, Edit, IndianRupeeIcon } from 'lucide-react';
 import React, { useState } from 'react'
-import TableComponent from '../common-table/TableComponent';
-import CommonTable from '../common-table/commonTable';
+// import TableComponent from '../common-table/TableComponent';
+// import CommonTable from '../common-table/commonTable';
 import CommonTableCard from '../common-table/CommonTableCard';
 import { display } from '@mui/system';
 
