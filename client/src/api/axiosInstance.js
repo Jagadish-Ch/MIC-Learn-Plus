@@ -2,7 +2,7 @@ import axios from "axios";
 import { ErrorMessage } from "@/components/Alert-Toast";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "mic-learn-plus-server.vercel.app",
 });
 
 axiosInstance.interceptors.request.use(
