@@ -10,24 +10,52 @@ require('dotenv').config();
 
 const router = express.Router();
 
-const upload = multer({ dest: "uploads/" });
+// const upload = multer({ dest: "uploads/" });
+
+const storage = multer.memoryStorage(); // ✅ Store files in memory
+const upload = multer({ storage });
+
+
+// router.post("/upload", upload.single("file"), async (req, res) => {
+//   try {
+//     console.log("Res from media-routes : " ,res)
+//     console.log("Path ",req.file.path)
+//     const result = await uploadMediaToCloudinary(req.file.path);
+//     console.log("After result ", result)
+//     res.status(200).json({
+//       success: true,
+//       data: result,
+//     });
+//   } catch (e) {
+//     console.log(e);
+
+//     res.status(500).json({ success: false, message: "Error uploading file" });
+//   }
+// });
 
 router.post("/upload", upload.single("file"), async (req, res) => {
   try {
-    console.log("Res from media-routes : " ,res)
-    console.log("Path ",req.file.path)
-    const result = await uploadMediaToCloudinary(req.file.path);
-    console.log("After result ", result)
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "No file uploaded" });
+    }
+
+    console.log("Received file:", req.file.originalname);
+
+    // ✅ Use file buffer instead of path
+    const result = await uploadMediaToCloudinary(req.file.buffer);
+
+    console.log("Upload Result:", result);
+
     res.status(200).json({
       success: true,
       data: result,
     });
   } catch (e) {
-    console.log(e);
-
+    console.error(e);
     res.status(500).json({ success: false, message: "Error uploading file" });
   }
 });
+
 
 router.delete("/delete/:id", async (req, res) => {
   try {
@@ -40,23 +68,52 @@ router.delete("/delete/:id", async (req, res) => {
       });
     }
 
-    await deleteMediaFromCloudinary(id);
+    const response = await deleteMediaFromCloudinary(id);
 
     res.status(200).json({
       success: true,
       message: "Assest deleted successfully from cloudinary",
+      data: response,
     });
   } catch (e) {
-    console.log(e);
+    console.log("Delete Error: ", e);
 
     res.status(500).json({ success: false, message: "Error deleting file" });
   }
 });
 
+// router.post("/bulk-upload", upload.array("files", 10), async (req, res) => {
+//   try {
+//     const uploadPromises = req.files.map((fileItem) =>
+//       uploadMediaToCloudinary(fileItem.path)
+//     );
+
+//     const results = await Promise.all(uploadPromises);
+
+//     res.status(200).json({
+//       success: true,
+//       data: results,
+//     });
+//   } catch (event) {
+//     console.log(event);
+
+//     res
+//       .status(500)
+//       .json({ success: false, message: "Error in bulk uploading files" });
+//   }
+// });
+
 router.post("/bulk-upload", upload.array("files", 10), async (req, res) => {
   try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ success: false, message: "No files uploaded" });
+    }
+
+    console.log("Uploading bulk files:", req.files.length);
+
+    // ✅ Use buffer instead of file.path
     const uploadPromises = req.files.map((fileItem) =>
-      uploadMediaToCloudinary(fileItem.path)
+      uploadMediaToCloudinary(fileItem.buffer)
     );
 
     const results = await Promise.all(uploadPromises);
@@ -65,12 +122,9 @@ router.post("/bulk-upload", upload.array("files", 10), async (req, res) => {
       success: true,
       data: results,
     });
-  } catch (event) {
-    console.log(event);
-
-    res
-      .status(500)
-      .json({ success: false, message: "Error in bulk uploading files" });
+  } catch (error) {
+    console.error("Bulk upload error:", error);
+    res.status(500).json({ success: false, message: "Error in bulk uploading files" });
   }
 });
 
