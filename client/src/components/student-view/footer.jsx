@@ -1,30 +1,34 @@
+import React from 'react';
 import { clamp } from 'framer-motion';
-import React from 'react'
+
+import img1 from '../../../public/LogoBgNone.png';
+import LogoMIC from '../../../public/logo-small.png';
 
 const StudentViewCommonFooter = () => {
     const footerData = [
-        { name: "About Us", link: "/about" },
-        { name: "Contact", link: "/contact" },
-        { name: "Privacy Policy", link: "/privacy" },
-        { name: "Terms of Service", link: "/terms" },
-        { name: "Blog", link: "/blog" },
+        { name: "About Us", link: "/about-us" },
+        { name: "Privacy Policy", link: "/privacy-policy" },
+        { name: "Terms of Service", link: "/terms-of-service" },
         { name: "Recommend a Course", link: "/recommend-course" },
-        { name: "Support", link: "/support" },
-        { name: "FAQ", link: "/faq" },
-        { name: "Feedback", link: "/feedback" },
+        // { name: "Contact", link: "/contact" },
     ];
 
     // Split the data into 3 sections
-    const sectionSize = Math.ceil(footerData.length / 3);
+    const sectionSize = Math.ceil(footerData.length / 2);
     const sections = [
         footerData.slice(0, sectionSize),
         footerData.slice(sectionSize, sectionSize * 2),
-        footerData.slice(sectionSize * 2),
+        // footerData.slice(sectionSize * 2),
     ];
 
   return (
     <div className="border-t-2 border-t-white w-full h-full bg-neutral-900 dark:bg-slate-900 text-white" >
-        <section className='container justify-between mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 p-[30px]'>
+        <section className='container justify-between items-center mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 p-[30px]'>
+        <div className='overflow-clip p-1 rounded-lg place-self-center md:place-self-start bg-gradient-to-tr from-blue-600 to-red-700'>
+          <div className='bg-blacks flex animate-infinite-scrolls'>
+            <img src={LogoMIC} className='bg-white h-28 w-auto rounded-lg brightness-150 '/>
+          </div>
+        </div>
         {sections.map((section, index) => (
           <div key={index}>
             <ul className="space-y-2 p-4 rounded-[30px] text-center border md:border-none">
@@ -32,7 +36,7 @@ const StudentViewCommonFooter = () => {
                 <li key={item.name}>
                   <a
                     href={item.link}
-                    className="hover:text-yellow-600 transition duration-200"
+                    className="hover:text-yellow-600 break-words transition duration-200"
                   >
                     {item.name}
                   </a>
@@ -41,6 +45,11 @@ const StudentViewCommonFooter = () => {
             </ul>
           </div>
         ))}
+        <div className='overflow-clip p-1 rounded-lg place-self-center md:place-self-end bg-gradient-to-tr from-blue-600 to-red-700'>
+          <div className='bg-blacks flex animate-infinite-scroll'>
+            <img src={img1} className='bg-white h-28 w-auto rounded-lg brightness-150 '/>
+          </div>
+        </div>
         </section>
 
         <section className='text-center pb-[30px] text-yellow-500'>

@@ -54,6 +54,11 @@ export default {
   			}
   		},
 		keyframes: {
+			'infinite-scroll': {
+				'0%': { transform : 'translateX(120px)', opacity:'0.5' },
+				'50%': { transform : 'translateX(0px)' , opacity:'1'},
+				'100%': { transform : 'translateX(-120px)' , opacity:'0.3'},
+			},
 			'trans-left': {
 				'0%': { transform : 'translateX(100px)' },
 				'100%': { transform : 'translateX(0px)' },
@@ -71,6 +76,7 @@ export default {
 			'trans-left': 'trans-left 1.5s ease-out',
 			'trans-right': 'trans-right 1.5s ease-out',
 			'appear': 'appear ease-in-out',
+			'infinite-scroll': 'infinite-scroll 6s infinite ',
 		}
   	}
   },

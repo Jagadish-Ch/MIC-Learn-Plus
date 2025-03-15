@@ -150,6 +150,7 @@ const StudentActivityPage = ({ location, authUserId }) => {
       name: "lectures",  // lectures.totalLectures
       label: "No.of Lectures",
       options: {
+        display: false,
         filter: true,
         sort: true,
         customBodyRender: (lectures) => {
@@ -161,6 +162,7 @@ const StudentActivityPage = ({ location, authUserId }) => {
       name: "lectures",  // lectures.lectureStatus.inComplete
       label: "In-Complete",
       options: {
+        display: false,
         filter: true,
         sort: true,
         customBodyRender: (lectures) => {
@@ -172,6 +174,7 @@ const StudentActivityPage = ({ location, authUserId }) => {
       name: "lectures",  // lectures.lectureStatus.inProgress
       label: "In-Progress",
       options: {
+        display: false,
         filter: true,
         sort: true,
         customBodyRender: (lectures) => {
@@ -183,6 +186,7 @@ const StudentActivityPage = ({ location, authUserId }) => {
       name: "lectures",  // lectures.lectureStatus.completed
       label: "Completed",
       options: {
+        display: false,
         filter: true,
         sort: true,
         customBodyRender: (lectures) => {
@@ -191,9 +195,35 @@ const StudentActivityPage = ({ location, authUserId }) => {
       }
     },
     {
+      name: "lectures",  // lectures.totalLectures
+      label: "Course Status",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (lectures) => {
+          let totalLectures = lectures?.totalLectures;
+          let inComplete = lectures?.lectureStatus.inComplete;
+          let inProgress = lectures?.lectureStatus.inProgress;
+          let completed = lectures?.lectureStatus.completed;
+          console.log(totalLectures, " - ", inComplete, " - ", inProgress, " - ", completed)
+          if (inProgress > 0) {
+            return <p className="place-self-center w-max rounded-2xl p-2 text-white font-bold bg-yellow-500 hover:cursor-pointer">In-Progress</p>
+          }
+          else if (totalLectures === completed) {
+            return <p className="place-self-center w-max rounded-2xl p-2 text-white font-bold bg-green-600 hover:cursor-pointer">Completed</p>
+          }
+          
+          else {
+            return <p className="place-self-center w-max rounded-2xl p-2 text-white font-bold bg-red-600 hover:cursor-pointer">In-Complete</p>
+          }
+        },
+      }
+    },
+    {
       name: "courseType",  // not in data
       label: "Course Type",
       options: {
+        display: false,
         filter: true,
         sort: true,
       }

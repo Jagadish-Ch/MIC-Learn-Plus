@@ -98,7 +98,7 @@ function StudentViewCommonHeader() {
           </div>
           <Card className={`absolute ${hideProfileItems?"card-inactive":"card-active"} pb-2 bg-zinc-100 dark:bg-card  shadow-inner z-10 w-full max-w-[200px] right-4 top-[4.9rem]`}>
             <CardHeader className="border-b-2 bg-green-7s00 text-center break-words ">
-              <CardTitle className="text-blue-900 font-bold hover:cursor-default dark:text-yellow-600">Jagadish Chennuru</CardTitle>
+              <CardTitle className="text-blue-900 font-bold hover:cursor-default dark:text-yellow-600">{auth?.user?.userName}</CardTitle>
             </CardHeader>
             { profileConfig.map((item, index)=> (
             <CardContent key={index} className="p-0 px-2">

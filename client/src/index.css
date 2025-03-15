@@ -226,3 +226,33 @@ body::-webkit-scrollbar-thumb {
 }
 
 }
+
+.editor-container {
+  @apply bg-white p-4 shadow-lg rounded-2xl border border-gray-300 max-w-4xl mx-auto mt-10;
+}
+
+.bubble-menu {
+  @apply flex flex-wrap gap-2 bg-gray-800 text-white p-2 rounded-lg shadow-md;
+}
+
+.bubble-menu select,
+.bubble-menu input[type='number'],
+.bubble-menu input[type='color'] {
+  @apply bg-gray-700 text-white border-none p-1 rounded-md text-sm;
+}
+
+.bubble-menu button {
+  @apply bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded-md transition-all duration-200;
+}
+
+.bubble-menu button:disabled {
+  @apply bg-gray-400 cursor-not-allowed;
+}
+
+.text-box {
+  @apply border border-gray-400 bg-blue-50 shadow-md rounded-md p-3 text-center cursor-move;
+}
+
+.text-box div {
+  @apply text-lg font-medium text-gray-700;
+}

@@ -338,7 +338,7 @@ function StudentViewCourseProgressPage() {
                 </Button>
                 {/* Reset Previous watched data */}
                 <Button onClick={handleRewatchCourse}>Rewatch Course</Button> 
-                <Button className="">My Cerificates</Button>
+                {/* <Button className="">My Cerificates</Button> */}
                 <Button 
                   className="absolute z-10 text-black dark:bg-slate-900 dark:text-red-900 dark:hover:bg-white hover:text-white right-1 top-2 w-1/12 rounded-full bg-white" 
                   onClick={()=>setShowCourseCompleteDialog(false)}

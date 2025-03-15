@@ -19,6 +19,7 @@ function StudentCoursesPage() {
       setStudentBoughtCoursesList(response?.data);
     }
     console.log(response);
+    // console.log("Bought Courses: ", studentBoughtCoursesList.courses.length);
   }
   useEffect(() => {
     fetchStudentBoughtCourses();
@@ -28,8 +29,8 @@ function StudentCoursesPage() {
     <div className="p-4 min-h-screen">
       <h1 className="text-3xl font-bold mb-8 text-yellow-600">My Courses</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
-        {studentBoughtCoursesList && studentBoughtCoursesList.length > 0 ? (
-          studentBoughtCoursesList.map((course) => (
+        {studentBoughtCoursesList && studentBoughtCoursesList?.courses?.length > 0 ? (
+          studentBoughtCoursesList?.courses.map((course) => (
             
             <Card key={course._id} className="flex flex-col">
               <CardContent className="p-4 flex-grow">

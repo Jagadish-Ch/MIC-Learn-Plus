@@ -14,15 +14,20 @@ import StudentViewCourseDetailsPage from "./pages/student/course-details";
 import PaypalPaymentReturnPage from "./pages/student/payment-return";
 import StudentCoursesPage from "./pages/student/student-courses";
 import StudentViewCourseProgressPage from "./pages/student/course-progress";
-import ExtractYouTubeVideoPlaylistId from "./components/instructor-view/courses/add-new-course/ExtractYouTubeVideoPlaylistId";
-import CourseRecommendationForm from "./pages/student/student-course-recommendation";
+// import ExtractYouTubeVideoPlaylistId from "./components/instructor-view/courses/add-new-course/ExtractYouTubeVideoPlaylistId";
+// import CourseRecommendationForm from "./pages/student/student-course-recommendation";
 import CertificateGenerator from "./components/certificate-generator/CertificateGenerator";
 import AdminPanel from "./components/certificate-generator2/AdminPanel";
 import CertificatePage from "./components/certificate-generator2/CertificatePage";
 import StudentActivityPage from "./components/profile/student-profile/StudentActivityPage";
 import StudentProfile from "./components/profile/student-profile";
-import BarChartReferTable from "./pages/instructor/BarChartReferTable";
+// import BarChartReferTable from "./pages/instructor/BarChartReferTable";
 import BubbleEditor from "./components/certificate-generator2/BubbleEditor";
+import StudentViewCommonFooter from "./components/student-view/footer";
+import AboutUs from "./pages/footer-pages/AboutUs";
+import PrivacyPolicy from "./pages/footer-pages/PrivacyPolicy";
+import TermsOfService from "./pages/footer-pages/TermsOfService";
+import TipTapBubbleEditor from "./components/certificate-generator2/TipTapBubbleEditor";
 // import CanvasComponent from "./components/certificate-generator/Components/CanvasComponent";
 
 function App() {
@@ -43,6 +48,7 @@ function App() {
             />
           }
         />
+        <Route path="/footer" element={<StudentViewCommonFooter/>}/>
         <Route
           path="/instructor"
           element={
@@ -57,7 +63,12 @@ function App() {
           path="/certificate-generator"
           element={<CertificateGenerator />}
         />
+        <Route
+          path="/certificate-editor"
+          element={<CertificateGenerator />}
+        />
         <Route path="/admin-page" element={<AdminPanel />} />
+        <Route path="/admin-setup" element={<TipTapBubbleEditor/>} />
         <Route path="/bubble-editor" element={<BubbleEditor/>
         } />
         <Route path="/user-page" element={<CertificatePage />} />
@@ -125,7 +136,7 @@ function App() {
           path="/"
           element={
             <RouteGuard
-              element={<StudentViewCommonLayout />}
+              element={<StudentViewCommonLayout loginDetails={auth?.user} />}
               authenticated={auth?.authenticate}
               user={auth?.user}
             />
@@ -159,7 +170,14 @@ function App() {
               />
             }
           />
+          <Route path="/about-us" element={<AboutUs/>} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy/>} />
+          <Route path="/terms-of-service" element={<TermsOfService/>} />
+          
         </Route>
+        <Route path="/about" element={<AboutUs/>} />
+          <Route path="/privacy" element={<PrivacyPolicy/>} />
+          <Route path="/terms" element={<TermsOfService/>} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
