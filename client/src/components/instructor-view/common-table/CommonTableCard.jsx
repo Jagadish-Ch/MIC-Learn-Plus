@@ -5,6 +5,7 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDarkMode } from "@/context/dark-mode-context/DarkModeContext";
 import axiosInstance from "@/api/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const sampleTitle = "Table Title";
 
@@ -70,6 +71,7 @@ const CommonTableCard = ({
   rowClickable,
 }) => {
   const { darkMode } = useDarkMode();
+  const navigate = useNavigate();
 
   const getMUITheme = () =>
     createTheme({
@@ -117,7 +119,7 @@ const CommonTableCard = ({
         pageLocation !== "RevenueOnEachCourses"
       ) {
         console.log("Clicked ", rowData);
-        window.open("http://localhost:5173/instructor/info/" + rowData[0]);
+        window.open("/info/" + rowData[0], 'rel=noopener noreferrer');
       } else if (
         rowClickable &&
         (pageLocation == "CreateCourse" ||
@@ -125,7 +127,7 @@ const CommonTableCard = ({
       ) {
         console.log("Clicked ", rowData);
         window.open(
-          axiosInstance+"/edit-course/" + rowData[0]
+          "/edit-course/" + rowData[0], 'rel=noopener noreferrer'
         );
       } else {
         console.log("Click Disabled");
