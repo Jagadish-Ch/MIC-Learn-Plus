@@ -117,7 +117,7 @@ const CommonTableCard = ({
         pageLocation !== "RevenueOnEachCourses"
       ) {
         console.log("Clicked ", rowData);
-        window.open("/info/" + rowData[0], 'rel=noopener noreferrer');
+        window.open("/instructor/info/" + rowData[0], 'rel=noopener noreferrer');
       } else if (
         rowClickable &&
         (pageLocation == "CreateCourse" ||
@@ -125,7 +125,7 @@ const CommonTableCard = ({
       ) {
         console.log("Clicked ", rowData);
         window.open(
-          "/edit-course/" + rowData[0], 'rel=noopener noreferrer'
+          "/instructor/edit-course/" + rowData[0], 'rel=noopener noreferrer'
         );
       } else {
         console.log("Click Disabled");
