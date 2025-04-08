@@ -4,8 +4,7 @@ import { Typography, Box, TableRow, TableCell } from "@mui/material";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDarkMode } from "@/context/dark-mode-context/DarkModeContext";
-import axiosInstance from "@/api/axiosInstance";
-import { useNavigate } from "react-router-dom";
+
 
 const sampleTitle = "Table Title";
 
@@ -71,7 +70,6 @@ const CommonTableCard = ({
   rowClickable,
 }) => {
   const { darkMode } = useDarkMode();
-  const navigate = useNavigate();
 
   const getMUITheme = () =>
     createTheme({

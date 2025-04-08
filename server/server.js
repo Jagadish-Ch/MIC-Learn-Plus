@@ -32,7 +32,7 @@ mongoose
   .then(() => console.log("mongodb is connected"))
   .catch((e) => console.log(e));
 
-//routes configurations
+//routes configuration
 app.use("/auth", authRoutes);
 app.use("/media", mediaRoutes);
 app.use("/user", getUserDetails);
