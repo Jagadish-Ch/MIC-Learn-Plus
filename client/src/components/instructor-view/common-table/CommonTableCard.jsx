@@ -4,6 +4,7 @@ import { Typography, Box, TableRow, TableCell } from "@mui/material";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDarkMode } from "@/context/dark-mode-context/DarkModeContext";
+import axiosInstance from "@/api/axiosInstance";
 
 const sampleTitle = "Table Title";
 
@@ -124,7 +125,7 @@ const CommonTableCard = ({
       ) {
         console.log("Clicked ", rowData);
         window.open(
-          "http://localhost:5173/instructor/edit-course/" + rowData[0]
+          axiosInstance+"/edit-course/" + rowData[0]
         );
       } else {
         console.log("Click Disabled");
